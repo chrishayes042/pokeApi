@@ -10,7 +10,9 @@ import (
 )
 type PokemonResponse struct {
 	Text string `json:"flavor_text"`
-	PokemonText []Pokemon `json:"flavor_text_entries"`
+	PokemonTextData []PokemonTextData `json:"flavor_text_entries"`
+	Happiness PokemonData `json:"base_happiness"`
+	CapRate PokemonData `json:"capture_rate"`
 }
 type Response struct {
 	Name string `json:"name"`
@@ -18,11 +20,18 @@ type Response struct {
 	Pokemon []Pokemon `json:"pokemon_entries"`
 }
 
+type PokemonTextData struct {
+	Text string `json:"flavor_text"`
+}
+
+type PokemonData struct {
+	Happiness int `json:"base_happiness"`
+	CapRate int `json:"capture_rate"`
+}
+
 type Pokemon struct {
 	EntryNo int `json:"entry_number"`
-	Species PokemonSpecies `json:"pokemon_species"`
-	Text string `json:"flavor_text"`
-	
+	Species PokemonSpecies `json:"pokemon_species"`	
 }
 
 type PokemonSpecies struct {
@@ -78,11 +87,19 @@ func main(){
 			// fmt.Println(string(getPokemonResponseData))
 			// create a var with the PokemonResponse struct
 			var pokeResponseObj PokemonResponse
+			var pokeResponseData PokemonData
+			json.Unmarshal(getPokemonResponseData, &pokeResponseData)
 			json.Unmarshal(getPokemonResponseData, &pokeResponseObj)
 				// fmt.Println(pokeResponseObj.Text)
-			
+				
 				// print the first text response
-				fmt.Println( pokeResponseObj.PokemonText[0] )
+				// fmt.Println( "Base happiness:" + pokeResponseObj.BaseHappy[0] )
+				// fmt.Println( "Capture Rate:" + pokeResponseObj.Capture_Rate[0] )
+				justString := pokeResponseObj.PokemonTextData[0]
+				fmt.Println( "The capture rate is:" , pokeResponseData.CapRate )
+				fmt.Println( "The happiness rate is:" , pokeResponseData.Happiness )
+				
+				fmt.Println(justString)
 				
 			
 		}
