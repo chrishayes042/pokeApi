@@ -9,9 +9,27 @@ import (
 	"net/http"
 	"os"
 )
-
+func helloHandler(w http.ResponseWriter, r *http.Request){
+	if r.URL.Path != "/index" {
+		http.Error(w, "404 not found.", http.StatusNotFound)
+		return
+	}
+	fmt.Fprintf(w, "Hello!")
+}
 
 func main(){
+	
+	fileServer := http.FileServer(http.Dir("../pokeApiFrontEnd"))
+	http.Handle("/", fileServer)
+	http.HandleFunc("index.html", helloHandler)
+
+	fmt.Println("Starting server on port 8080\n")
+
+	if err := http.ListenAndServe(":8080", nil);
+	err != nil {
+		log.Fatal(err)
+	}
+
 	// call the pokeapi
 	response, err := http.Get("http://pokeapi.co/api/v2/pokedex/kanto/")
 	// if error
