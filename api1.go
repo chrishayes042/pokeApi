@@ -32,48 +32,44 @@ func main(){
 	var responseObject pokemonStruct.Response
 	json.Unmarshal(responseData, &responseObject)
 
-	// fmt.Println(responseObject.Name)/* 
-	// fmt.Println(len(responseObject.Pokemon)) 
-
 	// for each object in the var above using the Pokemon array
 	for _, pokemon := range responseObject.Pokemon {
+
 		// print the entry number and name
 		fmt.Println( pokemon.EntryNo, pokemon.Species.Name )
+
 		// if the entry number is 1
-		if( pokemon.EntryNo == 1){
+		// going to make this when a user clicks on a pokemon
+		if( pokemon.EntryNo == 1 ){
+
 			// print
 			fmt.Println("Getting data for:", pokemon.Species.Name)
+
 			// call the api url inside the pokemon object
 			getPokemon, err := http.Get(pokemon.Species.Url)
-
-			if err != nil {
-				fmt.Print(err.Error())
-				os.Exit(1)
-			}
+				if err != nil {
+					fmt.Print(err.Error())
+					os.Exit(1)
+				}
 			// get the response
 			getPokemonResponseData, err := ioutil.ReadAll(getPokemon.Body)
-			if err != nil {
-				log.Fatal(err)
-			}
-			// fmt.Println(string(getPokemonResponseData))
+				if err != nil {
+					log.Fatal(err)
+				}
+			
 			// create a var with the PokemonResponse struct
 			var pokeResponseObj pokemonStruct.PokemonResponse
 			var pokeResponseData pokemonStruct.PokemonData
 			json.Unmarshal(getPokemonResponseData, &pokeResponseData)
 			json.Unmarshal(getPokemonResponseData, &pokeResponseObj)
-				// fmt.Println(pokeResponseObj.Text)
-				
-				// print the first text response
-				// fmt.Println( "Base happiness:" + pokeResponseObj.BaseHappy[0] )
-				// fmt.Println( "Capture Rate:" + pokeResponseObj.Capture_Rate[0] )
-				justString := pokeResponseObj.PokemonTextData[0]
-				fmt.Println( "The capture rate is:" , pokeResponseData.CapRate )
-				fmt.Println( "The happiness rate is:" , pokeResponseData.Happiness )
-				
-				fmt.Println(justString)
-				
 			
+			// print first text data
+			// not sure how to print it without the {} around the text
+			fmt.Println( pokeResponseObj.PokemonTextData[0] )
+			fmt.Println( "The capture rate is:" , pokeResponseData.CapRate )
+			fmt.Println( "The happiness rate is:" , pokeResponseData.Happiness )			
 		}
+		// break the for each loop
 		break
 		
 	}
