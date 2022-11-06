@@ -1,6 +1,7 @@
 package main
 
 import (
+	pokemonStruct "api/struct"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,37 +9,7 @@ import (
 	"net/http"
 	"os"
 )
-type PokemonResponse struct {
-	Text string `json:"flavor_text"`
-	PokemonTextData []PokemonTextData `json:"flavor_text_entries"`
-	Happiness PokemonData `json:"base_happiness"`
-	CapRate PokemonData `json:"capture_rate"`
-}
-type Response struct {
-	Name string `json:"name"`
-	Url string `json:"url"`
-	Pokemon []Pokemon `json:"pokemon_entries"`
-}
 
-type PokemonTextData struct {
-	Text string `json:"flavor_text"`
-}
-
-type PokemonData struct {
-	Happiness int `json:"base_happiness"`
-	CapRate int `json:"capture_rate"`
-}
-
-type Pokemon struct {
-	EntryNo int `json:"entry_number"`
-	Species PokemonSpecies `json:"pokemon_species"`	
-}
-
-type PokemonSpecies struct {
-	Name string `json:"name"`
-	Url string `json:"url"`
-
-}
 
 func main(){
 	// call the pokeapi
@@ -58,7 +29,7 @@ func main(){
 	// fmt.Println(string(responseData))
 
 	// create variable for the Response struct
-	var responseObject Response
+	var responseObject pokemonStruct.Response
 	json.Unmarshal(responseData, &responseObject)
 
 	// fmt.Println(responseObject.Name)/* 
@@ -86,8 +57,8 @@ func main(){
 			}
 			// fmt.Println(string(getPokemonResponseData))
 			// create a var with the PokemonResponse struct
-			var pokeResponseObj PokemonResponse
-			var pokeResponseData PokemonData
+			var pokeResponseObj pokemonStruct.PokemonResponse
+			var pokeResponseData pokemonStruct.PokemonData
 			json.Unmarshal(getPokemonResponseData, &pokeResponseData)
 			json.Unmarshal(getPokemonResponseData, &pokeResponseObj)
 				// fmt.Println(pokeResponseObj.Text)
